@@ -1,0 +1,23 @@
+{
+  "id": "nethserver-dante",
+  "name": "Report",
+  "summary": "Nethserver integration of nethesisdante project",
+  "description": "Nethserver integration of nethesisdante project",
+  "url": "",
+  "homepage": "https://github.com/NethServer/nethserver-dante",
+  "provides": ["nethserver-dante"],
+  "release": {
+    "version": "1.0.0"
+  },
+  "tags": ["report", "dante", "charts"],
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/NethServer/dev/issues"
+  },
+  "author": {
+    "name": "Edoardo Spadoni, Giacomo Sanchietti",
+    "url": "https://github.com/NethServer/nethserver-dante",
+    "email": "edoardo.spadoni@nethesis.it, giacomo.sanchietti@nethesis.it"
+  },
+  "icon": "logo.png"
+}

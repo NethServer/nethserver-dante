@@ -1,0 +1,13 @@
+{
+  "settings": {
+    "title": "Settings"
+  },
+  "about": {
+    "title": "About",
+    "website": "Web site",
+    "bug_tracker": "Bug tracker"
+  },
+  "dashboard": {
+    "title": "Dashboard"
+  }
+}
