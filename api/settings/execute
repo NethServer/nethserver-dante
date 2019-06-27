@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+
+#
+# Copyright (C) 2019 Nethesis S.r.l.
+# http://www.nethesis.it - nethserver@nethesis.it
+#
+# This script is part of NethServer.
+#
+# NethServer is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License,
+# or any later version.
+#
+# NethServer is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with NethServer.  If not, see COPYING.
+#
+
+use strict;
+use warnings;
+use esmith::ConfigDB;
+use Sys::Hostname;
+
+require '/usr/libexec/nethserver/api/lib/helper_functions.pl';
+
+my $input = readInput();
+my $cmd = $input->{'action'};
+
+if ($cmd ne 'test-mail') {
+    error();
+}
+my $db = esmith::ConfigDB->open_ro();
+
+my $record = $db->get('dante');
+my %dante = $record->props;
+my $alias = $dante{'alias'} || die("No alias for dante key");
+my $host = $dante{'PublicHost'} || hostname();
+my $theme = $dante{'Theme'} || 'light';
+my $palette = $dante{'Palette'} || 'palette1';
+my $interval = $dante{'Interval'} || 'week';
+my $language = $dante{'Language'} || 'en';
+
+my $from = $db->get_prop('root', 'SenderAddress') || 'no-reply@'.hostname();
+
+chdir('/usr/share/dante/caronte');
+my $url = "https://$host/$alias/#/?theme=$theme&palette=$palette&last=$interval&lang=$language";
+foreach (@{$input->{'addresses'}}) {
+    system(("./caronte", $url, $_, "Test report <$from>"));
+}

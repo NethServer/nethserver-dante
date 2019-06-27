@@ -1,0 +1,64 @@
+#!/usr/bin/php
+<?php
+/*
+ * Copyright (C) 2018 Nethesis S.r.l.
+ * http://www.nethesis.it - nethserver@nethesis.it
+ *
+ * This script is part of NethServer.
+ *
+ * NethServer is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License,
+ * or any later version.
+ *
+ * NethServer is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with NethServer.  If not, see COPYING.
+*/
+
+
+require_once("/usr/libexec/nethserver/api/lib/Helpers.php");
+
+
+$data = readInput();
+
+$v = new LegacyValidator($data);
+
+$v->declareParameter('PublicHost', Validate::HOSTNAME_FQDN);
+$v->declareParameter('Interval', $v->createValidator()->memberOf('week', 'month', 'halfyear'));
+$v->declareParameter('MaxEntries', Validate::POSITIVE_INTEGER);
+$v->declareParameter('Anonymization', Validate::SERVICESTATUS);
+$v->declareParameter('Theme', $v->createValidator()->memberOf('light','dark'));
+
+if (!file_exists("/usr/share/dante/beatrice/i18n/".$data['Language'].".json")) {
+    $v->addValidationError('Language', 'invalid_language', $data['Language']);
+}
+
+$mv = $v->createValidator(Validate::EMAIL);
+foreach ($data['MailDestinations'] as $obj) {
+    if (!$mv->evaluate($obj['mail'])) {
+        $v->addValidationError('MailDestinations', 'invalid_mail_address', $obj['mail']);
+    }
+
+    // $obj['time']: do not validate cron format, the ui should pass a valid expression
+}
+
+$db = new EsmithDatabase('configuration');
+$alias = $db->getProp('dante', 'alias');
+
+$url = "https://{$data['PublicHost']}/$alias/#/?theme={$data['Theme']}&palette={$data['Palette']}&last={$data['Interval']}&lang={$data['Language']}";
+exec("curl -s -k --connect-timeout 2 --fail '$url'", $out, $ret);
+if ($ret > 0) {
+    $v->addValidationError('PublicHost', 'public_host_must_resolve', $url);
+}
+
+# Validate the input
+if ($v->validate()) {
+    success();
+} else {
+    error($v);
+}
