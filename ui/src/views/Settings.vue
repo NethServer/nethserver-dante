@@ -421,7 +421,9 @@ export default {
                   mail: a.address
                 };
               })
-            : []
+            : [],
+        Anonymization: context.settings.Anonymization ? "enabled" : "disabled",
+        MaxEntries: context.settings.MaxEntries
       };
 
       context.view.isSaving = true;
