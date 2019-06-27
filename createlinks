@@ -29,7 +29,7 @@ use esmith::Build::CreateLinks  qw(:all);
 # actions to execute
 event_actions('nethserver-dante-update', qw(
       initialize-default-databases   00
-      nethserver-dante-conf          05
+      nethserver-dante-conf          03
 ));
 
 # templates to expand
