@@ -1,8 +1,7 @@
 <template>
   <div>
-    <h2>{{$t('dashboard.title')}}</h2>
-
-    <iframe :src="url" frameborder="0"></iframe>
+    <div v-if="!view.isLoaded" class="spinner spinner-lg"></div>
+    <iframe :width="width" v-show="view.isLoaded" :src="url" frameborder="0"></iframe>
   </div>
 </template>
 
@@ -17,23 +16,24 @@ export default {
       view: {
         isLoaded: false
       },
-      url: ""
+      url: "",
+      width: window.innerWidth - 70
     };
   },
   methods: {
     getURL() {
       var context = this;
       nethserver.exec(
-        ["nethserver-dante/read"],
+        ["nethserver-dante/dashboard/read"],
         {
-          action: "info"
+          hostname: window.location.hostname
         },
         null,
         function(success) {
           try {
             success = JSON.parse(success);
             context.view.isLoaded = true;
-            context.url = success;
+            context.url = success.url;
           } catch (e) {
             console.error(e);
             context.view.isLoaded = true;
@@ -51,7 +51,6 @@ export default {
 <style>
 iframe {
   position: absolute;
-  width: 100%;
   height: 100%;
   border: none;
   margin-left: -20px;

@@ -9,6 +9,7 @@
     "watch": "vue-cli-service build --watch"
   },
   "dependencies": {
+    "moment": "^2.24.0",
     "vue": "^2.6.6",
     "vue-i18n": "^8.8.2",
     "vue-router": "^3.0.1"
