@@ -410,7 +410,10 @@ export default {
 
             var parsedAddress = {
               address: address.mail,
-              day: address.time.charAt(address.time.length - 1),
+              day:
+                address.time.charAt(address.time.length - 1) == "*"
+                  ? "every"
+                  : address.time.charAt(address.time.length - 1),
               time: address.time.charAt(2)
             };
 
