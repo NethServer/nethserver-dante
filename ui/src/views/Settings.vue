@@ -110,7 +110,7 @@
             for="textInput-modal-markup"
           >{{$t('settings.language')}}</label>
           <div class="col-sm-5">
-            <select v-model="settings.Language" class="form-control">
+            <select :disabled="!languages" v-model="settings.Language" class="form-control">
               <option v-for="(l,lk) in languages" :key="lk" :value="l">{{l}}</option>
             </select>
             <span v-if="errors.Language.hasError" class="help-block">
@@ -212,6 +212,43 @@
           </div>
         </div>
       </form>
+
+      <h3>{{$t('settings.test_mail')}}</h3>
+      <form class="form-horizontal" v-on:submit.prevent="testMail()">
+        <div class="form-group">
+          <label
+            class="col-sm-2 control-label"
+            for="textInput-modal-markup"
+          >{{$t('settings.test_address')}}</label>
+          <div class="col-sm-5">
+            <input class="form-control" type="email" v-model="testSettings.address">
+          </div>
+        </div>
+        <div class="form-group">
+          <label
+            class="col-sm-2 control-label"
+            for="textInput-modal-markup"
+          >{{$t('settings.include_configured_addresses')}}</label>
+          <div class="col-sm-5">
+            <input class="form-control" type="checkbox" v-model="testSettings.include">
+          </div>
+        </div>
+        <div class="form-group">
+          <label
+            class="col-sm-2 control-label"
+            for="textInput-modal-markup"
+          >{{$t('settings.send_mail')}}</label>
+          <div class="col-sm-2">
+            <button type="submit" class="btn btn-primary">{{$t('settings.send')}}</button>
+            <div
+              v-if="view.isSending"
+              class="spinner spinner-sm form-spinner-loader adjust-top-loader mg-left"
+            ></div>
+            <span v-if="view.sentSuccess" class="fa fa-check green mg-left"></span>
+            <span v-if="view.sentFail" class="fa fa-times red mg-left"></span>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -228,7 +265,14 @@ export default {
     return {
       view: {
         isLoaded: true,
-        isSaving: false
+        isSaving: false,
+        isSending: false,
+        sentSuccess: false,
+        sentFail: false
+      },
+      testSettings: {
+        address: "",
+        include: false
       },
       settings: {
         Theme: "dark",
@@ -287,7 +331,7 @@ export default {
         palette8: ["#662E9B", "#F86624", "#F9C80E", "#EA3546", "#43BCCD"],
         palette9: ["#5C4742", "#A5978B", "#8D5B4C", "#5A2A27", "#C4BBAF"]
       },
-      languages: ["en"],
+      languages: null,
       errors: this.initErrors()
     };
   },
@@ -382,7 +426,6 @@ export default {
     getLanguages() {
       var context = this;
 
-      context.view.isLoaded = false;
       nethserver.exec(
         ["nethserver-dante/settings/read"],
         {
@@ -396,10 +439,49 @@ export default {
             console.error(e);
           }
           context.languages = success.languages;
-          context.view.isLoaded = true;
         },
         function(error) {
           console.error(error);
+        }
+      );
+    },
+    testMail() {
+      var context = this;
+
+      context.view.isSending = true;
+      nethserver.exec(
+        ["nethserver-dante/settings/execute"],
+        {
+          action: "test-mail",
+          addresses: [context.testSettings.address].concat(
+            context.testSettings.include
+              ? context.settings.MailDestinations.map(function(m) {
+                  return m.mail;
+                })
+              : []
+          )
+        },
+        null,
+        function(success) {
+          context.view.isSending = false;
+          context.view.sentSuccess = true;
+          context.view.sentFail = false;
+
+          setTimeout(function() {
+            context.view.sentSuccess = false;
+            context.view.sentFail = false;
+          }, 3000);
+        },
+        function(error) {
+          console.error(error);
+          context.view.isSending = false;
+          context.view.sentSuccess = false;
+          context.view.sentFail = true;
+
+          setTimeout(function() {
+            context.view.sentSuccess = false;
+            context.view.sentFail = false;
+          }, 3000);
         }
       );
     },
@@ -490,5 +572,17 @@ export default {
   color: white;
   padding: 5px;
   margin: 5px;
+}
+
+.mg-left {
+  margin-left: 15px;
+}
+
+.green {
+  color: #3f9c35;
+}
+
+.red {
+  color: #cc0000;
 }
 </style>
