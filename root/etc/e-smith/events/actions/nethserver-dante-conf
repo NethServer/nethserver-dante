@@ -1,6 +1,7 @@
 #!/usr/bin/perl
+
 #
-# Copyright (C) 2018 Nethesis S.r.l.
+# Copyright (C) 2019 Nethesis S.r.l.
 # http://www.nethesis.it - nethserver@nethesis.it
 #
 # This script is part of NethServer.
@@ -19,30 +20,14 @@
 # along with NethServer.  If not, see COPYING.
 #
 
-use esmith::Build::CreateLinks  qw(:all);
+use esmith::ConfigDB;
+use esmith::util;
+my $confdb = esmith::ConfigDB->open;
+my $dante = $confdb->get('dante') or die "No dante db entry found\n";
+my $alias = $dante->prop('alias') || "";
 
-
-#
-# nethserver-dante-update event
-#
-
-# actions to execute
-event_actions('nethserver-dante-update', qw(
-      initialize-default-databases   00
-      nethserver-dante-conf          05
-));
-
-# templates to expand
-event_templates('nethserver-dante-update', qw(
-    /etc/httpd/conf.d/dante.conf
-    /usr/share/dante/beatrice/config.js
-    /etc/sysconfig/dante
-    /etc/cron.d/dante
-));
-
-# services to restart
-event_services('nethserver-dante-update', qw(
-    httpd reload
-    virgilio restart
-));
-
+# initialize alias if needed
+if ($alias eq "") {
+    $alias = esmith::util::genRandomHash();
+    $confdb->set_prop('dante','alias',$alias);
+}

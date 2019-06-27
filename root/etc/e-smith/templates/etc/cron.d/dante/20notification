@@ -1,0 +1,20 @@
+{
+    use Sys::Hostname;
+    my $alias = $dante{'alias'} || die("No alias for dante key");
+    my $host = $dante{'PublicHost'} || hostname();
+    my $theme = $dante{'Theme'} || 'light';
+    my $palette = $dante{'Palette'} || 'palette1';
+    my $interval = $dante{'Interval'} || 'week';
+    my $language = $dante{'Language'} || 'en';
+    my $mdest = $dante{'MailDestinations'} || '';
+
+    my $cmd = 'cd /usr/share/dante/caronte && ./caronte';
+    my $url = "https://$host/$alias/#/?theme=$theme&palette=$palette&last=$interval&lang=$language";
+    if ($mdest ne '') {
+        $OUT .= "\n# Send notification mails\n";
+        foreach (split(/,/, $mdest)) {
+            my ($time, $mail) = split(/;/,$_);
+            $OUT .= "$time root $cmd $url $mail\n";
+        }
+    }
+}

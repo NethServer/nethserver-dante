@@ -1,0 +1,5 @@
+# Set production environment
+GIN_MODE=release
+
+# Listening port
+PORT=9292

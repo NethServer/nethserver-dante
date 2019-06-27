@@ -1,0 +1,16 @@
+# Directory where server files are saves
+VIRGILIO_STORE_DIR="/usr/share/dante/virgilio"
+
+# Maximum number of delta days for queries
+# The server will refuse to search data older then VIRGILIO_MAX_DAYS
+VIRGILIO_MAX_DAYS=365
+
+# Maximum number of entries for list widget
+VIRGILIO_MAX_ENTRIES={{$dante{'MaxEntries'}}}
+
+# If set to true, sensible data will be hidden
+VIRGILIO_ANONYMIZE={{$dante{'Anonymization'} eq 'enabled' ? 'true' : 'false'}}
+
+# CORS configuration
+VIRGILIO_ALLOW_ORIGIN="*"
+
