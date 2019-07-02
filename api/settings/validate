@@ -50,6 +50,12 @@ foreach ($data['MailDestinations'] as $obj) {
 $db = new EsmithDatabase('configuration');
 $alias = $db->getProp('dante', 'alias');
 
+$cmd = "dig +short @1.1.1.1 @8.8.8.8 ".escapeshellcmd($data['PublicHost']);
+exec($cmd, $out, $ret);
+if ($ret > 0 || !$out) {
+    $v->addValidationError('PublicHost', 'public_host_must_resolve', $data['PublicHost']);
+}
+
 $url = "https://{$data['PublicHost']}/$alias/#/?theme={$data['Theme']}&palette={$data['Palette']}&last={$data['Interval']}&lang={$data['Language']}";
 exec("curl -s -k --connect-timeout 2 --fail '$url'", $out, $ret);
 if ($ret > 0) {
