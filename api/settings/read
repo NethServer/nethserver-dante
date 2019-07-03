@@ -55,9 +55,9 @@ if ($cmd eq 'configuration') {
     }
 } elsif ($cmd eq 'languages') {
     $ret->{'languages'} = [];
-    foreach (glob q("/usr/share/dante/beatrice/i18n/??.json")) {
-        my($filename, $dirs, $suffix) = fileparse($_, (".json"));
-        push(@{$ret->{'languages'}}, $filename);
+    foreach (glob q("/usr/share/dante/beatrice/i18n/??")) {
+        my $lang = basename($_);
+        push(@{$ret->{'languages'}}, $lang);
     }
 }
 print encode_json($ret);
