@@ -1,10 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-
-[nethserver.CockpitEmptyVueJS]
+[nethserver.CockpitDante]
 source_file = ui/public/i18n/language.json
 source_lang = en
 type = KEYVALUEJSON
-
-
