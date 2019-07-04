@@ -34,7 +34,7 @@ $v->declareParameter('MaxEntries', Validate::POSITIVE_INTEGER);
 $v->declareParameter('Anonymization', Validate::SERVICESTATUS);
 $v->declareParameter('Theme', $v->createValidator()->memberOf('light','dark'));
 
-if (!file_exists("/usr/share/dante/beatrice/i18n/".$data['Language'].".json")) {
+if (!file_exists("/usr/share/dante/beatrice/i18n/".$data['Language'])) {
     $v->addValidationError('Language', 'invalid_language', $data['Language']);
 }
 
