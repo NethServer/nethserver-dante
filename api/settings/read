@@ -53,6 +53,10 @@ if ($cmd eq 'configuration') {
         my ($time, $mail) = split(/;/, $_);
         push(@{$ret->{'settings'}{'MailDestinations'}}, {"time" => $time, "mail" => $mail});
     }
+    my $cmd = 'dig +short @1.1.1.1 @8.8.8.8 '.$props{'PublicHost'};
+    my $out = `$cmd`;
+    chomp $out;
+    $ret->{'checks'}{'valid'} = ($? == 0 && $out ne '') ? JSON::true : JSON::false
 } elsif ($cmd eq 'languages') {
     $ret->{'languages'} = [];
     foreach (glob q("/usr/share/dante/beatrice/i18n/??")) {
