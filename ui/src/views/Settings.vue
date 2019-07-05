@@ -5,6 +5,15 @@
     <div v-if="view.isLoaded">
       <h3>{{$t('settings.host_configuration')}}</h3>
       <form class="form-horizontal" v-on:submit.prevent="saveSettings('internet')">
+        <div v-if="!isValidDns" class="form-group">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-5">
+            <div class="alert alert-warning">
+              <span class="pficon pficon-warning-triangle-o"></span>
+              {{$t('settings.invalid_dns')}}
+            </div>
+          </div>
+        </div>
         <div :class="['form-group', errors.PublicHost.hasError ? 'has-error' : '']">
           <label
             class="col-sm-2 control-label"
@@ -274,6 +283,7 @@ export default {
         address: "",
         include: false
       },
+      isValidDns: true,
       settings: {
         Theme: "dark",
         Palette: "palette1",
@@ -404,6 +414,8 @@ export default {
             context.settings.Anonymization == "enabled";
           context.settings.MaxEntries =
             parseInt(context.settings.MaxEntries) || 10;
+
+          context.isValidDns = success.checks.valid
 
           for (var a in context.settings.MailDestinations) {
             var address = context.settings.MailDestinations[a];
