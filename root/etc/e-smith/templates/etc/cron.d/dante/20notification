@@ -9,13 +9,12 @@
     my $mdest = $dante{'MailDestinations'} || '';
     my $from = $root{'SenderAddress'} || 'no-reply@'.hostname();
 
-    my $cmd = 'cd /usr/share/dante/caronte && ./caronte';
     my $url = "https://$host/$alias/#/?theme=$theme&palette=$palette&last=$interval&lang=$language";
     if ($mdest ne '') {
         $OUT .= "\n# Send notification mails\n";
         foreach (split(/,/, $mdest)) {
             my ($time, $mail) = split(/;/,$_);
-            $OUT .= "$time root $cmd '$url' $mail 'Report <$from>'\n";
+            $OUT .= "$time root /usr/bin/caronte '$url' $mail 'Report <$from>'\n";
         }
     }
 }

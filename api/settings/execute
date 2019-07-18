@@ -46,8 +46,7 @@ my $language = $dante{'Language'} || 'en';
 
 my $from = $db->get_prop('root', 'SenderAddress') || 'no-reply@'.hostname();
 
-chdir('/usr/share/dante/caronte');
 my $url = "https://$host/$alias/#/?theme=$theme&palette=$palette&last=$interval&lang=$language";
 foreach (@{$input->{'addresses'}}) {
-    system(("./caronte", $url, $_, "Test report <$from>"));
+    system(("/usr/bin/caronte", $url, $_, "Test report <$from>"));
 }

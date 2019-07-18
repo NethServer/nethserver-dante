@@ -11,7 +11,7 @@ Source1:        %{name}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  nethserver-devtools
-Requires:       nethserver-cockpit dante dante-caronte
+Requires:       nethserver-cockpit dante
 
 %description
 NethServer configuration module for nethesis/dante project
