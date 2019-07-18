@@ -3,12 +3,37 @@
     <h2>{{$t('settings.title')}}</h2>
     <div v-if="!view.isLoaded" class="spinner spinner-lg"></div>
     <div v-if="view.isLoaded">
+      <h3>{{$t('settings.mining_configuration')}}</h3>
+      <form class="form-horizontal" v-on:submit.prevent="miningNow()">
+        <div v-if="isEmptyMiners" class="form-group">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-5">
+            <div class="alert alert-info no-mg-bottom">
+              <span class="pficon pficon-info"></span>
+              {{$t('settings.missing_miners')}}
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="textInput-modal-markup"></label>
+          <div class="col-sm-5">
+            <button class="btn btn-primary">{{$t('settings.mining_now')}}</button>
+            <div
+              v-if="view.isMining"
+              class="spinner spinner-sm form-spinner-loader adjust-top-loader mg-left"
+            ></div>
+            <span v-if="view.miningSuccess" class="fa fa-check green mg-left"></span>
+            <span v-if="view.miningFail" class="fa fa-times red mg-left"></span>
+          </div>
+        </div>
+      </form>
+
       <h3>{{$t('settings.host_configuration')}}</h3>
       <form class="form-horizontal" v-on:submit.prevent="saveSettings('internet')">
         <div v-if="!isValidDns" class="form-group">
           <div class="col-sm-2"></div>
           <div class="col-sm-5">
-            <div class="alert alert-warning">
+            <div class="alert alert-warning no-mg-bottom">
               <span class="pficon pficon-warning-triangle-o"></span>
               {{$t('settings.invalid_dns')}}
             </div>
@@ -277,13 +302,17 @@ export default {
         isSaving: false,
         isSending: false,
         sentSuccess: false,
-        sentFail: false
+        sentFail: false,
+        isMining: false,
+        miningSuccess: false,
+        miningFail: false
       },
       testSettings: {
         address: "",
         include: false
       },
       isValidDns: true,
+      isEmptyMiners: false,
       settings: {
         Theme: "dark",
         Palette: "palette1",
@@ -415,7 +444,8 @@ export default {
           context.settings.MaxEntries =
             parseInt(context.settings.MaxEntries) || 10;
 
-          context.isValidDns = success.checks.valid
+          context.isValidDns = success.checks.valid;
+          context.isEmptyMiners = success.checks.empty;
 
           for (var a in context.settings.MailDestinations) {
             var address = context.settings.MailDestinations[a];
@@ -496,6 +526,41 @@ export default {
           setTimeout(function() {
             context.view.sentSuccess = false;
             context.view.sentFail = false;
+          }, 3000);
+        }
+      );
+    },
+    miningNow() {
+      var context = this;
+
+      context.view.isMining = true;
+      nethserver.exec(
+        ["nethserver-dante/settings/execute"],
+        {
+          action: "mining-now"
+        },
+        null,
+        function(success) {
+          context.view.isMining = false;
+          context.view.miningSuccess = true;
+          context.view.miningFail = false;
+
+          setTimeout(function() {
+            context.view.miningSuccess = false;
+            context.view.miningFail = false;
+          }, 3000);
+
+          context.getSettings();
+        },
+        function(error) {
+          console.error(error);
+          context.view.isMining = false;
+          context.view.miningSuccess = false;
+          context.view.miningFail = true;
+
+          setTimeout(function() {
+            context.view.miningSuccess = false;
+            context.view.miningFail = false;
           }, 3000);
         }
       );
@@ -599,5 +664,9 @@ export default {
 
 .red {
   color: #cc0000;
+}
+
+.no-mg-bottom {
+  margin-bottom: 0px;
 }
 </style>

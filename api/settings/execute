@@ -30,23 +30,26 @@ require '/usr/libexec/nethserver/api/lib/helper_functions.pl';
 my $input = readInput();
 my $cmd = $input->{'action'};
 
-if ($cmd ne 'test-mail') {
+if ($cmd eq 'test-mail') {
+    my $db = esmith::ConfigDB->open_ro();
+
+    my $record = $db->get('dante');
+    my %dante = $record->props;
+    my $alias = $dante{'alias'} || die("No alias for dante key");
+    my $host = $dante{'PublicHost'} || hostname();
+    my $theme = $dante{'Theme'} || 'light';
+    my $palette = $dante{'Palette'} || 'palette1';
+    my $interval = $dante{'Interval'} || 'week';
+    my $language = $dante{'Language'} || 'en';
+
+    my $from = $db->get_prop('root', 'SenderAddress') || 'no-reply@'.hostname();
+
+    my $url = "https://$host/$alias/#/?theme=$theme&palette=$palette&last=$interval&lang=$language";
+    foreach (@{$input->{'addresses'}}) {
+        system(("/usr/bin/caronte", $url, $_, "Test report <$from>"));
+    }
+} elsif ($cmd eq 'mining-now') {
+    system("/usr/bin/ciacco");
+} else {
     error();
-}
-my $db = esmith::ConfigDB->open_ro();
-
-my $record = $db->get('dante');
-my %dante = $record->props;
-my $alias = $dante{'alias'} || die("No alias for dante key");
-my $host = $dante{'PublicHost'} || hostname();
-my $theme = $dante{'Theme'} || 'light';
-my $palette = $dante{'Palette'} || 'palette1';
-my $interval = $dante{'Interval'} || 'week';
-my $language = $dante{'Language'} || 'en';
-
-my $from = $db->get_prop('root', 'SenderAddress') || 'no-reply@'.hostname();
-
-my $url = "https://$host/$alias/#/?theme=$theme&palette=$palette&last=$interval&lang=$language";
-foreach (@{$input->{'addresses'}}) {
-    system(("/usr/bin/caronte", $url, $_, "Test report <$from>"));
 }

@@ -57,6 +57,7 @@ if ($cmd eq 'configuration') {
     my $out = `$cmd`;
     chomp $out;
     $ret->{'checks'}{'valid'} = ($? == 0 && $out ne '') ? JSON::true : JSON::false
+    $ret->{'checks'}{'empty'} = (-d '/var/lib/nethserver/dante') ? JSON::false : JSON::true
 } elsif ($cmd eq 'languages') {
     $ret->{'languages'} = [];
     foreach (glob q("/usr/share/dante/beatrice/i18n/??")) {
