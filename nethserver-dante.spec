@@ -1,6 +1,6 @@
 Name:           nethserver-dante
-Version:        0.0.0
-Release:        1%{?dist}
+Version: 0.1.0
+Release: 1%{?dist}
 Summary:        NethServer configuration module for nethesis/dante project
 
 License:        GPLv3
@@ -49,3 +49,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Tue Jul 23 2019 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 0.1.0-1
+- Integration of Dante report - NethServer/dev#5781
+
