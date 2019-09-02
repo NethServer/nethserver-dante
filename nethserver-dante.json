@@ -7,7 +7,7 @@
   "homepage": "https://github.com/NethServer/nethserver-dante",
   "provides": ["nethserver-dante"],
   "release": {
-    "version": "1.0.0"
+    "version": "_RELEASE_"
   },
   "tags": ["report", "dante", "charts"],
   "license": "GPL-3.0",
