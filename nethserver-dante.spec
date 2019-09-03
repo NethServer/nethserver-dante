@@ -1,5 +1,5 @@
 Name:           nethserver-dante
-Version: 0.1.0
+Version: 0.1.1
 Release: 1%{?dist}
 Summary:        NethServer configuration module for nethesis/dante project
 
@@ -50,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Tue Sep 03 2019 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 0.1.1-1
+- Cockpit. List correct application version - Nethserver/dev#5819
+
 * Tue Jul 23 2019 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 0.1.0-1
 - Integration of Dante report - NethServer/dev#5781
 
