@@ -1,0 +1,11 @@
+#
+# nsapi_nethserver_dante
+#
+Cmnd_Alias NSAPI_NETHSERVER_DANTE = \
+    /usr/libexec/nethserver/api/nethserver-dante/dashboard/read, \
+    /usr/libexec/nethserver/api/nethserver-dante/settings/execute, \
+    /usr/libexec/nethserver/api/nethserver-dante/settings/read, \
+    /usr/libexec/nethserver/api/nethserver-dante/settings/update, \
+    /usr/libexec/nethserver/api/nethserver-dante/settings/validate
+
+Defaults!NSAPI_NETHSERVER_DANTE !requiretty
