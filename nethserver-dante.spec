@@ -38,7 +38,7 @@ cp -a %{name}.json %{buildroot}/usr/share/cockpit/nethserver/applications/
 cp -a api/* %{buildroot}/usr/libexec/nethserver/api/%{name}/
 chmod +x %{buildroot}/usr/libexec/nethserver/api/%{name}/*
 
-%{genfilelist} %{buildroot} \
+%{genfilelist} %{buildroot} --file /etc/sudoers.d/50_nsapi_nethserver_dante 'attr(0440,root,root)' \
 $RPM_BUILD_ROOT > e-smith-%{version}-filelist
 
 %clean
