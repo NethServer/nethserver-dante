@@ -457,7 +457,7 @@ export default {
                   ? "every"
                   : address.time.charAt(address.time.length - 1),
               time: 
-                address.time.charAt(3) == " "
+                (address.time.charAt(3)).trim() == ""
                   ? address.time.charAt(2)
                   : address.time.substring(2,3)
                   
