@@ -459,7 +459,7 @@ export default {
               time: 
                 address.time.charAt(3).trim() == ""
                   ? address.time.charAt(2)
-                  : address.time.substring(2,2)
+                  : address.time.substr(2,2)
                   
             };
 
