@@ -456,7 +456,11 @@ export default {
                 address.time.charAt(address.time.length - 1) == "*"
                   ? "every"
                   : address.time.charAt(address.time.length - 1),
-              time: address.time.charAt(2)
+              time: 
+                address.time.charAt(3) == " "
+                  ? address.time.charAt(2)
+                  : address.time.substring(2,3)
+                  
             };
 
             context.addresses.push(parsedAddress);
