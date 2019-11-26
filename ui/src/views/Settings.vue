@@ -456,10 +456,7 @@ export default {
                 address.time.charAt(address.time.length - 1) == "*"
                   ? "every"
                   : address.time.charAt(address.time.length - 1),
-              time: 
-                address.time.charAt(3).trim() == ""
-                  ? address.time.charAt(2)
-                  : address.time.substr(2,2)
+              time: address.time.split(" ")[1]
                   
             };
 
