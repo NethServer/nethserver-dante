@@ -1,5 +1,5 @@
 Name:           nethserver-dante
-Version: 1.0.0
+Version: 1.0.1
 Release: 1%{?dist}
 Summary:        NethServer configuration module for nethesis/dante project
 
@@ -50,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Wed Nov 27 2019 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.1-1
+- Reports: hour not changed properly - Bug NethServer/dev#5947
+
 * Tue Oct 01 2019 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.0-1
 - Sudoers based authorizations for Cockpit UI - NethServer/dev#5805
 
