@@ -446,6 +446,7 @@ export default {
 
           context.isValidDns = success.checks.valid;
           context.isEmptyMiners = success.checks.empty;
+          context.addresses = [];
 
           for (var a in context.settings.MailDestinations) {
             var address = context.settings.MailDestinations[a];
