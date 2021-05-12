@@ -1,8 +1,8 @@
 {
   "id": "nethserver-dante",
   "name": "Report",
-  "summary": "Nethserver integration of nethesisdante project",
-  "description": "Nethserver integration of nethesisdante project",
+  "summary": "System usage reports using Dante project",
+  "description": "System usage reports using Dante project",
   "url": "",
   "homepage": "https://github.com/NethServer/nethserver-dante",
   "provides": ["nethserver-dante"],
