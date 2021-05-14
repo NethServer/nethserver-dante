@@ -1,5 +1,5 @@
 Name:           nethserver-dante
-Version: 1.0.3
+Version: 1.0.4
 Release: 1%{?dist}
 Summary:        NethServer configuration module for nethesis/dante project
 
@@ -50,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Fri May 14 2021 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.4-1
+- White-label support on Cockpit applications - NethServer/dev#6510
+
 * Thu Feb 11 2021 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.3-1
 - Dante report: duplicate mail entries after mining action - Bug NethServer/dev#6423
 
