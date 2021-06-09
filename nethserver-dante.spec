@@ -1,5 +1,5 @@
 Name:           nethserver-dante
-Version: 1.0.4
+Version: 1.0.5
 Release: 1%{?dist}
 Summary:        NethServer configuration module for nethesis/dante project
 
@@ -50,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Wed Jun 09 2021 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.5-1
+- Cockpit applications: honor URLs inside manifest - NethServer/dev#6517
+
 * Fri May 14 2021 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.4-1
 - White-label support on Cockpit applications - NethServer/dev#6510
 
