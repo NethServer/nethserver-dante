@@ -1,3 +1,3 @@
 # Execute all miners each day at 23:45
 # Miners should be executed before the enf of day
-45 23 * * *   root /usr/bin/ciacco
+45 23 * * *   root LANG=en_US.UTF-8 /usr/bin/ciacco
