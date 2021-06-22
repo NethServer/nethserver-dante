@@ -1,5 +1,5 @@
 Name:           nethserver-dante
-Version: 1.0.5
+Version: 1.0.6
 Release: 1%{?dist}
 Summary:        NethServer configuration module for nethesis/dante project
 
@@ -50,6 +50,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Tue Jun 22 2021 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.6-1
+- dante report: mail miners return 0 values - Bug NethServer/dev#6533
+
 * Wed Jun 09 2021 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 1.0.5-1
 - Cockpit applications: honor URLs inside manifest - NethServer/dev#6517
 
